@@ -1,0 +1,14 @@
+<root>
+    <book>
+        <author>예시</author>
+        <name>텍스트</name>
+    </book>
+    <book>
+        <author>예시 k</author>
+        <name>텍스트</name>
+    </book>
+    <book>
+        <author>Magnus Carlsen</author>
+        <name>Chess Man 2</name>
+    </book>
+</root>

@@ -1,0 +1,39 @@
+services:
+  web:
+    build:
+      context: .
+    container_name: mywebapp
+    ports:
+      - "80:80"        # Expose Apache (HTTP)
+      - "5432:5432"    # Expose PostgreSQL
+    volumes:
+      - ./:/var/www/html  # Map your project files (adjust if needed)
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    networks:
+      - webnet
+    command: >
+      bash -c "service postgresql start && apachectl -D FOREGROUND"
+
+  postgres:
+    image: postgres:latest  # You can use the official PostgreSQL image
+    container_name: mydb
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+
+
+#psql -h localhost -U docker -d mydb -p 5432
