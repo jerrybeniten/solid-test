@@ -14,8 +14,10 @@ class XmlProcessor
     public function __construct(string $directory)
     {
         $this->directory = $directory;
+        $processedDirectory = '../data/xml_files_processed';  // Adjust this path as needed
+
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->directory));
-        $this->xmlReader = new XmlFileReader($iterator);
+        $this->xmlReader = new XmlFileReader($iterator, $processedDirectory);
         $this->db = new Database('postgres', 'mydb', 'docker', 'docker'); // Adjust DB credentials as needed
     }
 
