@@ -9,22 +9,30 @@ class ComposerStaticInitf58243600abc941b5d06dc1a32b4a9d5
     public static $prefixLengthsPsr4 = array (
         'L' => 
         array (
-            'Lib\\XmlHelper\\' => 14,
+            'Lib\\' => 4,
         ),
         'D' => 
         array (
             'DB\\' => 3,
         ),
+        'A' => 
+        array (
+            'App\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Lib\\XmlHelper\\' => 
+        'Lib\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/lib/XmlHelper',
+            0 => __DIR__ . '/../..' . '/lib',
         ),
         'DB\\' => 
         array (
             0 => __DIR__ . '/../..' . '/db',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 

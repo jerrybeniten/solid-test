@@ -1,21 +1,11 @@
 <?php
 
-use DB\Database;
-use Lib\XmlHelper\XmlFileReader;
-use Lib\XmlHelper\XmlSyncService;
-
 require_once '../vendor/autoload.php';
 
-$host = 'postgres';
-$dbname = 'mydb';
-$user = 'docker';
-$password = 'docker';
-$directory = '../data/xml_files';
+use App\Services\XmlProcessor;
 
-$db = new Database($host, $dbname, $user, $password);
-$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
-$xmlFileReader = new XmlFileReader($iterator);
-$xmlSyncService = new XmlSyncService($db, $xmlFileReader);
+$directory = '../data/xml_files'; // Path to the XML files directory
+$processor = new XmlProcessor($directory);
 
-$xmlSyncService->syncXmlData($directory);
-echo "XML data synced successfully.";
+echo "<pre>";
+var_dump($processor->process());

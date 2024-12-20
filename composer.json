@@ -1,8 +1,9 @@
 {
     "autoload": {
         "psr-4": {
-            "DB\\": "db/",
-            "Lib\\XmlHelper\\": "lib/XmlHelper/"
-        }
+            "App\\": "src/",
+            "Lib\\": "lib/",
+            "DB\\": "db/"
+          }
     }
 }

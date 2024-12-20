@@ -31,6 +31,7 @@ class XmlFileReader
                 $content = file_get_contents($filePath);
 
                 $wrappedContent = $this->ensureRootElement($content, 'roots');
+
                 $xml = simplexml_load_string($wrappedContent);
                 if ($xml === false) {
                     throw new Exception("Failed to load XML file: " . $filePath);

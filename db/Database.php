@@ -7,14 +7,14 @@ use PDOException;
 
 class Database
 {
-    private $pdo;
+    private PDO $pdo;
 
     public function __construct($host, $dbname, $user, $password)
     {
         $this->pdo = $this->connect($host, $dbname, $user, $password);
     }
 
-    private function connect($host, $dbname, $user, $password)
+    private function connect($host, $dbname, $user, $password): PDO
     {
         try {
             $dsn = "pgsql:host={$host};dbname={$dbname}";
@@ -33,10 +33,10 @@ class Database
         exit;
     }
 
-    public function insertAuthors(array $books)
+    public function insertAuthors(array $books): bool
     {
         if (empty($books)) {
-            return false; 
+            return false;
         }
 
         $this->pdo->beginTransaction();
@@ -49,16 +49,16 @@ class Database
             $stmtBook = $this->pdo->prepare($sqlBook);
 
             foreach ($books as $book) {
-                var_dump($book);
                 $stmtAuthor->execute(['name' => $book['author']]);
                 $authorResult = $stmtAuthor->fetch(PDO::FETCH_ASSOC);
 
-                $authorId = $authorResult ? $authorResult['id'] : null;
-                if (!$authorId) {
+                if ($authorResult) {
+                    $authorId = $authorResult['id'];
+                } else {
                     $stmtSelect = $this->pdo->prepare("SELECT id FROM authors WHERE name = :name");
                     $stmtSelect->execute(['name' => $book['author']]);
                     $authorResult = $stmtSelect->fetch(PDO::FETCH_ASSOC);
-                    $authorId = $authorResult['id'];
+                    $authorId = $authorResult['id'] ?? null;
                 }
 
                 if ($authorId) {

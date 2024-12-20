@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Lib\\XmlHelper\\' => array($baseDir . '/lib/XmlHelper'),
+    'Lib\\' => array($baseDir . '/lib'),
     'DB\\' => array($baseDir . '/db'),
+    'App\\' => array($baseDir . '/src'),
 );

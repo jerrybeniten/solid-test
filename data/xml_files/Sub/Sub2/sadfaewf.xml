@@ -1,0 +1,16 @@
+<root>
+    <book>
+        <author>Jose Rizal</author>
+        <name>The Art of War</name>
+    </book>
+
+    <book>
+        <author>Orange and Lemons</author>
+        <name>World Test</name>
+    </book>
+
+    <book>
+        <author>Jerry Beniten</author>
+        <name>The Art of War 3</name>
+    </book>
+</root>
