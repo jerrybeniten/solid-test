@@ -8,16 +8,17 @@ use DB\Database;
 class XmlProcessor
 {
     private string $directory;
+    private string $processedDirectory;
     private XmlFileReader $xmlReader;
     private Database $db;
 
-    public function __construct(string $directory)
+    public function __construct(string $directory, string $processedDirectory)
     {
         $this->directory = $directory;
-        $processedDirectory = '../data/xml_files_processed';  // Adjust this path as needed
+        $this->processedDirectory = $processedDirectory;  // Adjust this path as needed        
 
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->directory));
-        $this->xmlReader = new XmlFileReader($iterator, $processedDirectory);
+        $this->xmlReader = new XmlFileReader($iterator, $this->processedDirectory);
         $this->db = new Database('postgres', 'mydb', 'docker', 'docker'); // Adjust DB credentials as needed
     }
 
