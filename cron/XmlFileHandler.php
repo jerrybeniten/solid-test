@@ -4,9 +4,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Config\Config;
 use App\Interfaces\ErrorHandler;
+use DB\Database;
 use App\Services\HtmlResultDisplay;
 use App\Services\SimpleErrorHandler;
 use App\Services\XmlProcessor;
+use Lib\XmlHelper\XmlFileReader;
 
 class XmlFileHandler
 {
@@ -38,19 +40,37 @@ class XmlFileHandler
     public function processFiles(): void
     {
         try {
-            $result = $this->processor->process();            
+            $result = $this->processor->process();
             $this->resultDisplay->display($result);
-        } catch (Exception $e) {            
+        } catch (Exception $e) {
             $this->errorHandler->handleError($e->getMessage());
         }
     }
+
+    public function run(): void {}
 }
 
 $directoryConfig = Config::getDirectories();
+$dbConfig = Config::getDbConfig();
+
+$db = new Database(
+    $dbConfig['host'],
+    $dbConfig['database'],
+    $dbConfig['username'],
+    $dbConfig['password'],
+);
+
+$iterator = new \RecursiveIteratorIterator(
+    new \RecursiveDirectoryIterator($directoryConfig['xmlDirectory'])
+);
+
+$xmlReader = new XmlFileReader($iterator, $directoryConfig['processedXmlDirectory']);
 
 $processor = new XmlProcessor(
     $directoryConfig['xmlDirectory'],
-    $directoryConfig['processedXmlDirectory']
+    $directoryConfig['processedXmlDirectory'],
+    $db,
+    $xmlReader
 );
 
 $resultDisplay = new HtmlResultDisplay();

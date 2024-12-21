@@ -2,11 +2,12 @@
 
 namespace Lib\XmlHelper;
 
+use App\Interfaces\XmlFileReaderInterface;
 use RecursiveIteratorIterator;
 use SimpleXMLElement;
 use Exception;
 
-class XmlFileReader
+class XmlFileReader implements XmlFileReaderInterface
 {
     private RecursiveIteratorIterator $iterator;
     private string $processedDirectory;  // New property for processed files' destination

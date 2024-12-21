@@ -12,4 +12,14 @@ class Config
             'processedXmlDirectory' => dirname(__DIR__, 2) . '/data/xml_files_processed',
         ];
     }
+
+    public static function getDbConfig(): array
+    {
+        return [
+            'host' => 'postgres',
+            'database' => 'mydb',
+            'username' => 'docker',
+            'password' => 'docker'
+        ];
+    }
 }

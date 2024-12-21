@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Interfaces\XmlFileReaderInterface;
 use Lib\XmlHelper\XmlFileReader;
 use DB\Database;
 
@@ -12,14 +13,16 @@ class XmlProcessor
     private XmlFileReader $xmlReader;
     private Database $db;
 
-    public function __construct(string $directory, string $processedDirectory)
-    {
+    public function __construct(
+        string $directory,
+        string $processedDirectory,
+        Database $db,
+        XmlFileReaderInterface $xmlReader
+    ) {
         $this->directory = $directory;
-        $this->processedDirectory = $processedDirectory;  // Adjust this path as needed        
-
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->directory));
-        $this->xmlReader = new XmlFileReader($iterator, $this->processedDirectory);
-        $this->db = new Database('postgres', 'mydb', 'docker', 'docker'); // Adjust DB credentials as needed
+        $this->processedDirectory = $processedDirectory;
+        $this->xmlReader = $xmlReader;
+        $this->db = $db;
     }
 
     private function getUniqueCollection(array $data): array
