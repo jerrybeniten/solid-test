@@ -3,6 +3,9 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Config\Config;
+use App\Interfaces\ErrorHandler;
+use App\Services\HtmlResultDisplay;
+use App\Services\SimpleErrorHandler;
 use App\Services\XmlProcessor;
 
 class XmlFileHandler
@@ -10,12 +13,21 @@ class XmlFileHandler
     private $xmlDirectory;
     private $processedDirectory;
     private $processor;
+    private $resultDisplay;
+    private $errorHandler;
 
-    public function __construct(string $xmlDirectory, string $processedDirectory, XmlProcessor $processor)
-    {
+    public function __construct(
+        string $xmlDirectory,
+        string $processedDirectory,
+        XmlProcessor $processor,
+        HtmlResultDisplay $resultDisplay,
+        ErrorHandler $errorHandler
+    ) {
         $this->xmlDirectory = $xmlDirectory;
         $this->processedDirectory = $processedDirectory;
         $this->processor = $processor;
+        $this->resultDisplay = $resultDisplay;
+        $this->errorHandler = $errorHandler;
     }
 
     public function validateDirectories(): bool
@@ -26,21 +38,11 @@ class XmlFileHandler
     public function processFiles(): void
     {
         try {
-            $result = $this->processor->process();
-            $this->displayResult($result);
-        } catch (Exception $e) {
-            $this->handleError($e->getMessage());
+            $result = $this->processor->process();            
+            $this->resultDisplay->display($result);
+        } catch (Exception $e) {            
+            $this->errorHandler->handleError($e->getMessage());
         }
-    }
-
-    private function displayResult($result): void
-    {
-        echo "<pre>" . htmlspecialchars(print_r($result, true)) . "</pre>";
-    }
-
-    private function handleError(string $message): void
-    {
-        echo "Error: " . $message . "\n";
     }
 }
 
@@ -51,10 +53,15 @@ $processor = new XmlProcessor(
     $directoryConfig['processedXmlDirectory']
 );
 
+$resultDisplay = new HtmlResultDisplay();
+$errorHandler = new SimpleErrorHandler();
+
 $fileHandler = new XmlFileHandler(
     $directoryConfig['xmlDirectory'],
     $directoryConfig['processedXmlDirectory'],
-    $processor
+    $processor,
+    $resultDisplay,
+    $errorHandler
 );
 
 if (!$fileHandler->validateDirectories()) {
