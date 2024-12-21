@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Config\Config;
+use App\Controllers\InsertController;
 use App\Models\Database;
 use App\Models\InsertService;
 use App\Services\HtmlResultDisplay;
@@ -46,8 +47,9 @@ try {
     $items = $fileHandler->processFiles();
 
     $database = new Database($dbConfig);
-    $insertService = new InsertService($database, $items);
-    $insertService->upsert();
+    $upsertService = new InsertService($database, $items);
+    $insertController = new InsertController($upsertService);
+    $insertController->handleRequest();
 
     echo "[INFO] Done with the sync.\n";
 
