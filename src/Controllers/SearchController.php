@@ -3,15 +3,14 @@
 namespace App\Controllers;
 
 use App\Interfaces\ResponseInterface;
-use App\Models\SearchService;
-
+use App\Interfaces\SearchInterface;
 
 class SearchController
 {
     private $response;
     private $searchService;
 
-    public function __construct(ResponseInterface $response, SearchService $searchService)
+    public function __construct(ResponseInterface $response, SearchInterface $searchService)
     {
         $this->response = $response;
         $this->searchService = $searchService;
