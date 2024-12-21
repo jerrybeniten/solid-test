@@ -12,31 +12,41 @@ body {
     width: 50%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 15px; /* This ensures padding on all sides */
+    padding: 15px;
 }
+
 .row {
     display: flex;
     flex-wrap: wrap;
     margin: -10px;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 .col {
     padding: 10px;
-    flex: 1;
-    min-width: 100%;
+    flex: 0 1 auto;
+    min-width: 80%;
+    box-sizing: border-box;
+    text-align: left;
 }
 
 .form-section {
-    display: flex;              /* Ensure it's a flex container */
-    justify-content: center;    /* Horizontally center the content */
-    align-items: center;        /* Vertically center the content */
-    flex-direction: column;     /* Stack items vertically */
-    height: 100vh; 
+    display: flex;
+    /* Ensure it's a flex container */
+    justify-content: center;
+    /* Horizontally center the content */
+    align-items: center;
+    /* Vertically center the content */
+    flex-direction: column;
+    /* Stack items vertically */
+    height: 100vh;
 }
 
 @media (max-width: 768px) {
     .container {
-        padding: 15px; /* Add consistent padding for mobile screens */
+        padding: 15px;
+        /* Add consistent padding for mobile screens */
     }
 }
 
@@ -61,5 +71,5 @@ body {
     text-align: center;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
+
 }
