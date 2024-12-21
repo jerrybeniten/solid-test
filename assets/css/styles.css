@@ -33,14 +33,14 @@ body {
 
 .form-section {
     display: flex;
-    /* Ensure it's a flex container */
+
     justify-content: center;
-    /* Horizontally center the content */
+  
     align-items: center;
-    /* Vertically center the content */
+
     flex-direction: column;
-    /* Stack items vertically */
-    height: 100vh;
+
+
 }
 
 @media (max-width: 768px) {
@@ -72,4 +72,60 @@ body {
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
+}
+
+.results-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Add space between rows */
+}
+
+.result {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0; /* Start invisible for animation */
+    transform: translateX(-100%); /* Start off-screen */
+    animation: slide-in 0.5s ease-out forwards;
+}
+
+.result > .author {
+    font-weight: bold;
+}
+
+.result > .title {
+    text-align: right;
+    color: #555;
+}
+
+
+.result:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.result:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.result:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.result:nth-child(4) {
+    animation-delay: 0.8s;
+}
+
+/* Keyframes for the sliding animation */
+@keyframes slide-in {
+    to {
+        opacity: 1; /* Fade in */
+        transform: translateX(0); /* Move to its original position */
+    }
 }

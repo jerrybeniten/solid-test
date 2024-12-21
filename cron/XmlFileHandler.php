@@ -5,6 +5,7 @@ namespace Cron;
 use App\Interfaces\ErrorHandler;
 use App\Services\HtmlResultDisplay;
 use App\Services\XmlProcessor;
+use Exception;
 
 class XmlFileHandler
 {

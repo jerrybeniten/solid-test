@@ -14,6 +14,11 @@ class Search {
 
     async handleSearch(query) {
         try {
+            
+            if (query.length < 3) {             
+                return;
+            }
+
             const results = await this.searchService.search(query);
             this.displayResults(results);
         } catch (error) {
@@ -23,8 +28,8 @@ class Search {
     }
 
     displayResults(results) {
-        this.resultsContainer.innerHTML = '';
-        if (results.length === 0) {
+        this.resultsContainer.innerHTML = '';        
+        if (results.length === 0 || results.length === undefined) {
             this.resultsContainer.innerHTML = '<p>No results found</p>';
         } else {
 
@@ -32,16 +37,14 @@ class Search {
 
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'book-item';
-                
-                itemDiv.innerHTML = `
-                    <div class="col">
-                        <div class="box">
-                            <span> ${item.author_name} </span> | 
-                            <span> ${item.book_title} </span>
-                        </div>
-                    </div>
+
+                itemDiv.innerHTML = `                    
+                    <div class="result">
+                        <div class="author">${item.author_name}</div>
+                        <div class="title">${item.book_title}</div>
+                    </div>            
                 `;
-            
+
                 this.resultsContainer.appendChild(itemDiv);
             });
         }
