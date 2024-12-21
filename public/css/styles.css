@@ -1,0 +1,65 @@
+/* css/styles.css */
+
+/* Simple CSS Grid resembling Bootstrap */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 50%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px; /* This ensures padding on all sides */
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+}
+
+.col {
+    padding: 10px;
+    flex: 1;
+    min-width: 100%;
+}
+
+.form-section {
+    display: flex;              /* Ensure it's a flex container */
+    justify-content: center;    /* Horizontally center the content */
+    align-items: center;        /* Vertically center the content */
+    flex-direction: column;     /* Stack items vertically */
+    height: 100vh; 
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px; /* Add consistent padding for mobile screens */
+    }
+}
+
+.search-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.box {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+}
