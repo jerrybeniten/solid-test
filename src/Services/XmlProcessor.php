@@ -10,19 +10,16 @@ class XmlProcessor
 {
     private string $directory;
     private string $processedDirectory;
-    private XmlFileReader $xmlReader;
-    private Database $db;
+    private XmlFileReader $xmlReader;    
 
     public function __construct(
         string $directory,
-        string $processedDirectory,
-        Database $db,
+        string $processedDirectory,        
         XmlFileReaderInterface $xmlReader
     ) {
         $this->directory = $directory;
         $this->processedDirectory = $processedDirectory;
-        $this->xmlReader = $xmlReader;
-        $this->db = $db;
+        $this->xmlReader = $xmlReader;        
     }
 
     private function getUniqueCollection(array $data): array
@@ -61,7 +58,7 @@ class XmlProcessor
     {
         $data = $this->xmlReader->readXmlFiles($this->directory);
         $uniqueCollection = $this->getUniqueCollection($data);
-        $this->db->insertAuthors($uniqueCollection);
+        //$this->db->insertAuthors($uniqueCollection);
         return $uniqueCollection;
     }
 }

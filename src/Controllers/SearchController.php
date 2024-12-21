@@ -18,11 +18,8 @@ class SearchController
     }
 
     public function handleRequest(string $query)
-    {
-        // Fetch the search results from the service
-        $results = $this->searchService->search($query);
-
-        // Send the response (could be JSON or HTML depending on the chosen implementation)
+    {        
+        $results = $this->searchService->search($query);     
         $this->response->send($results);
     }
 }

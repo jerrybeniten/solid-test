@@ -1,41 +1,28 @@
 <?php
 
-namespace DB;
+namespace App\Models;
 
+use App\Interfaces\InsertInterface;
 use PDO;
 use PDOException;
 
-class Database
+class InsertService implements InsertInterface
 {
-    private PDO $pdo;
+    private $pdo;
+    private array $data;
 
-    public function __construct($host, $dbname, $user, $password)
+    public function __construct(Database $database, array $data)
     {
-        $this->pdo = $this->connect($host, $dbname, $user, $password);
+        $this->pdo = $database->getPDO();
+        $this->data = $data;
     }
-
-    private function connect($host, $dbname, $user, $password): PDO
+    
+    public function upsert(): bool
     {
-        try {
-            $dsn = "pgsql:host={$host};dbname={$dbname}";
-            $pdo = new PDO($dsn, $user, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $pdo;
-        } catch (PDOException $e) {
-            $this->handleError($e);
-        }
-    }
 
-    private function handleError(PDOException $e)
-    {
-        echo $e->getMessage();
-        echo "Database error occurred. Please try again later.";
-        exit;
-    }
+        $items = $this->data;
 
-    public function insertAuthors(array $books): bool
-    {
-        if (empty($books)) {
+        if (empty($items)) {
             return false;
         }
 
@@ -48,21 +35,21 @@ class Database
             $stmtAuthor = $this->pdo->prepare($sqlAuthor);
             $stmtBook = $this->pdo->prepare($sqlBook);
 
-            foreach ($books as $book) {
-                $stmtAuthor->execute(['name' => $book['author']]);
+            foreach ($items as $item) {
+                $stmtAuthor->execute(['name' => $item['author']]);
                 $authorResult = $stmtAuthor->fetch(PDO::FETCH_ASSOC);
 
                 if ($authorResult) {
                     $authorId = $authorResult['id'];
                 } else {
                     $stmtSelect = $this->pdo->prepare("SELECT id FROM authors WHERE name = :name");
-                    $stmtSelect->execute(['name' => $book['author']]);
+                    $stmtSelect->execute(['name' => $item['author']]);
                     $authorResult = $stmtSelect->fetch(PDO::FETCH_ASSOC);
                     $authorId = $authorResult['id'] ?? null;
                 }
 
                 if ($authorId) {
-                    $stmtBook->execute(['title' => $book['name'], 'author_id' => $authorId]);
+                    $stmtBook->execute(['title' => $item['name'], 'author_id' => $authorId]);
                 }
             }
 
@@ -72,6 +59,13 @@ class Database
             $this->pdo->rollBack();
             $this->handleError($e);
             return false;
-        }
+        }    
     }
+
+    private function handleError(PDOException $e)
+    {
+        echo $e->getMessage();
+        echo "Database error occurred. Please try again later.";
+        exit;
+    }  
 }
