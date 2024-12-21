@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use App\Config\Config;
 use App\Services\XmlProcessor;
 
 class XmlFileHandler
@@ -10,11 +11,11 @@ class XmlFileHandler
     private $processedDirectory;
     private $processor;
 
-    public function __construct(string $xmlDirectory, string $processedDirectory)
+    public function __construct(string $xmlDirectory, string $processedDirectory, XmlProcessor $processor)
     {
         $this->xmlDirectory = $xmlDirectory;
         $this->processedDirectory = $processedDirectory;
-        $this->processor = new XmlProcessor($this->xmlDirectory, $this->processedDirectory);
+        $this->processor = $processor;
     }
 
     public function validateDirectories(): bool
@@ -43,13 +44,19 @@ class XmlFileHandler
     }
 }
 
-// Initialize the handler with directories
-$xmlDirectory = __DIR__ . '/../data/xml_files';
-$processedDirectory = __DIR__ . '/../data/xml_files_processed';
+$directoryConfig = Config::getDirectories();
 
-$fileHandler = new XmlFileHandler($xmlDirectory, $processedDirectory);
+$processor = new XmlProcessor(
+    $directoryConfig['xmlDirectory'],
+    $directoryConfig['processedXmlDirectory']
+);
 
-// Validate directories and process files
+$fileHandler = new XmlFileHandler(
+    $directoryConfig['xmlDirectory'],
+    $directoryConfig['processedXmlDirectory'],
+    $processor
+);
+
 if (!$fileHandler->validateDirectories()) {
     echo "Error: One or more directories do not exist.\n";
     exit;
