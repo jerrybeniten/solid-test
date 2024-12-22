@@ -20,7 +20,7 @@ try {
         new \RecursiveDirectoryIterator($directoryConfig['xmlDirectory'])
     );
 
-    $xmlReader = new XmlFileReader($iterator, $directoryConfig['processedXmlDirectory']);
+    $xmlReader = new XmlFileReader($iterator, $directoryConfig['processedXmlDirectory'], $directoryConfig['errorLog']);
 
     $processor = new XmlProcessor(
         $directoryConfig['xmlDirectory'],

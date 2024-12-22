@@ -10,6 +10,7 @@ class Config
         return [
             'xmlDirectory' => dirname(__DIR__, 2) . '/data/xml_files',
             'processedXmlDirectory' => dirname(__DIR__, 2) . '/data/xml_files_processed',
+            'errorLog' => dirname(__DIR__, 2) . '/logs/xml-errors.log',
         ];
     }
 

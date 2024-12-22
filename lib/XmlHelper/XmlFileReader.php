@@ -11,6 +11,7 @@ class XmlFileReader implements XmlFileReaderInterface
 {
     private RecursiveIteratorIterator $iterator;
     private string $processedDirectory;  // New property for processed files' destination
+    private string $errorLog;
 
     /**
      * Constructor with dependency injection for RecursiveIteratorIterator.
@@ -18,10 +19,11 @@ class XmlFileReader implements XmlFileReaderInterface
      * @param RecursiveIteratorIterator $iterator
      * @param string $processedDirectory Directory where processed files will be moved.
      */
-    public function __construct(RecursiveIteratorIterator $iterator, string $processedDirectory)
+    public function __construct(RecursiveIteratorIterator $iterator, string $processedDirectory, string $errorLog)
     {
         $this->iterator = $iterator;
         $this->processedDirectory = $processedDirectory;
+        $this->errorLog = $errorLog;
     }
 
     /**
@@ -52,7 +54,10 @@ class XmlFileReader implements XmlFileReaderInterface
                 // Load the XML
                 $xml = simplexml_load_string($wrappedContent);
                 if ($xml === false) {
-                    throw new Exception("Failed to load XML file: " . $filePath);
+                    $errorMessage = "[ERROR] " . date("Y-m-d H:i:s") . " Skipping invalid XML file: " . $filePath . "\n";
+                    echo $errorMessage;
+                    file_put_contents($this->errorLog, $errorMessage, FILE_APPEND);
+                    continue;
                 }
                 $xmlFiles[] = $xml;
 

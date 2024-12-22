@@ -26,7 +26,7 @@ class SearchService implements SearchInterface
                 authors ON books.author_id = authors.id
             WHERE 
                 authors.name ILIKE :query
-            LIMIT 5
+            LIMIT 10
         ";
 
         try {
