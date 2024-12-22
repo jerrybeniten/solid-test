@@ -47,40 +47,16 @@ class Search {
                     </div>            
                 `;
                 this.resultsContainer.appendChild(itemDiv);
-                return itemDiv;  // Return the item element for later manipulation
+                return itemDiv;
             });
 
-            // Use requestAnimationFrame for smoother transition
             let delay = 0;
-            itemElements.forEach((itemDiv, index) => {
-                // Delay each item sliding in using setTimeout and CSS classes
+            itemElements.forEach((itemDiv, index) => {                
                 setTimeout(() => {
                     itemDiv.querySelector('.result').classList.add('visible');
                 }, delay);
-                delay += 300; // Increment delay for each item by 300ms
-            });
-
-            // results.forEach((item) => {
-
-            //     const itemDiv = document.createElement('div');
-            //     itemDiv.className = 'book-item';
-
-            //     itemDiv.innerHTML = `                    
-            //          <div class="result" style="opacity: 0; transition: opacity 0.5s;">
-            //             <div class="author">${item.author_name}</div>
-            //             <div class="title">${item.book_title}</div>
-            //         </div>            
-            //     `;
-
-            //     this.resultsContainer.appendChild(itemDiv);
-            // });
-
-            // const resultsList = this.resultsContainer.querySelectorAll('.result');
-            // resultsList.forEach((result, index) => {
-            //     setTimeout(() => {
-            //         result.style.opacity = 1; // Show the result with a fade-in effect
-            //     }, index * 3000); // Delay of 300ms between each item
-            // });
+                delay += 300;
+            });           
         }
     }
 }
