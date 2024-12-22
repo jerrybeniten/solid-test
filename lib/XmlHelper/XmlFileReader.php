@@ -30,43 +30,57 @@ class XmlFileReader implements XmlFileReaderInterface
      * Reads all XML files recursively from a directory and returns an array of SimpleXMLElement objects.
      *
      * @param string $directory
-     * @return SimpleXMLElement[]
-     * @throws Exception If the directory is invalid or XML file cannot be loaded.
+     * @return SimpleXMLElement[]   
      */
     public function readXmlFiles(string $directory): array
     {
         $xmlFiles = [];
 
-        if (!is_dir($directory)) {
-            throw new Exception("Invalid directory: $directory");
-        }
-
+        $this->validateDirectory($directory);
         $this->iterator->rewind();
 
         foreach ($this->iterator as $file) {
             if ($this->isXmlFile($file)) {
-                $filePath = $file->getRealPath();
-                $content = file_get_contents($filePath);
-
-                // Ensure the XML file has a root element
-                $wrappedContent = $this->ensureRootElement($content, 'roots');
-
-                // Load the XML
-                $xml = simplexml_load_string($wrappedContent);
-                if ($xml === false) {
-                    $errorMessage = "[ERROR] " . date("Y-m-d H:i:s") . " Skipping invalid XML file: " . $filePath . "\n";
-                    echo $errorMessage;
-                    file_put_contents($this->errorLog, $errorMessage, FILE_APPEND);
-                    continue;
-                }
-                $xmlFiles[] = $xml;
-
-                // Move the processed file to the 'processed' directory
-                $this->moveFile($filePath);
+                $xmlFiles[] = $this->processXmlFile($file);
             }
         }
 
         return $xmlFiles;
+    }
+
+    private function validateDirectory(string $directory): void
+    {
+        if (!is_dir($directory)) {
+            throw new Exception("Invalid directory: $directory");
+        }
+    }
+
+    private function processXmlFile($file): SimpleXMLElement
+    {
+        $filePath = $file->getRealPath();
+        $content = file_get_contents($filePath);
+
+        // Ensure the XML file has a root element
+        $wrappedContent = $this->ensureRootElement($content, 'roots');
+
+        // Load the XML
+        $xml = simplexml_load_string($wrappedContent);
+        if ($xml === false) {
+            $this->handleInvalidXml($filePath);
+            return null;  // Skip invalid XML files
+        }
+
+        // Move the processed file to the 'processed' directory
+        $this->moveFile($filePath);
+
+        return $xml;
+    }
+
+    private function handleInvalidXml(string $filePath): void
+    {
+        $errorMessage = "[ERROR] " . date("Y-m-d H:i:s") . " Skipping invalid XML file: " . $filePath . "\n";
+        echo $errorMessage;
+        file_put_contents($this->errorLog, $errorMessage, FILE_APPEND);
     }
 
     /**
