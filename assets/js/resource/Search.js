@@ -25,6 +25,21 @@ class Search {
     }
 
     async handleSearch(query) {
+        this.resultsContainer.innerHTML = '';
+        if (query.length > 255) {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'book-item';
+            itemDiv.innerHTML = `                    
+                    <div class="error-message" role="listitem" aria-labelledby="book-title">
+                        <div aria-label="Author Name:">
+                                Maximum allowed character is only 255
+                        </div>
+                    </div>`;
+            this.resultsContainer.appendChild(itemDiv);
+            itemDiv.querySelector('.result').classList.add('visible');
+            return false;
+        }
+
         try {
             const results = await this.searchService.search(query);
             this.displayResults(results, query);
@@ -36,19 +51,18 @@ class Search {
     }
 
     displayResults(results, query) {
-        this.resultsContainer.innerHTML = '';  
+        this.resultsContainer.innerHTML = '';         
 
         if (results.length === 0 || results.length === undefined) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'book-item';
             itemDiv.innerHTML = `                    
-                    <div class="result" role="listitem" aria-labelledby="book-title">
+                    <div class="error-message" role="listitem" aria-labelledby="book-title">
                         <div aria-label="Author Name:">
                                 No results for search term: ${query}
                         </div>
                     </div>`;
-            this.resultsContainer.appendChild(itemDiv);
-            itemDiv.querySelector('.result').classList.add('visible');
+            this.resultsContainer.appendChild(itemDiv);          
 
         } else {
 
