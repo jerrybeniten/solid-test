@@ -1,23 +1,16 @@
 <?php
 
 namespace App\Services;
-
-use App\Interfaces\XmlFileReaderInterface;
-
-
 class XmlProcessorService
 {
-    private string $directory;
-    private string $processedDirectory;
+    private string $directory;    
     private XmlDirectoryReaderService $xmlReader;
 
     public function __construct(
-        string $directory,
-        string $processedDirectory,
+        string $directory,        
         XmlDirectoryReaderService $xmlReader
     ) {
-        $this->directory = $directory;
-        $this->processedDirectory = $processedDirectory;
+        $this->directory = $directory;        
         $this->xmlReader = $xmlReader;
     }
 

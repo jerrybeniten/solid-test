@@ -27,7 +27,7 @@ class Search {
     async handleSearch(query) {
         try {
             const results = await this.searchService.search(query);
-            this.displayResults(results);
+            this.displayResults(results, query);
 
         } catch (error) {
             console.error(error);
@@ -35,10 +35,21 @@ class Search {
         }
     }
 
-    displayResults(results) {
-        this.resultsContainer.innerHTML = '';
+    displayResults(results, query) {
+        this.resultsContainer.innerHTML = '';  
+
         if (results.length === 0 || results.length === undefined) {
-            this.resultsContainer.innerHTML = '<p>No results found</p>';
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'book-item';
+            itemDiv.innerHTML = `                    
+                    <div class="result" role="listitem" aria-labelledby="book-title">
+                        <div aria-label="Author Name:">
+                                No results for search term: ${query}
+                        </div>
+                    </div>`;
+            this.resultsContainer.appendChild(itemDiv);
+            itemDiv.querySelector('.result').classList.add('visible');
+
         } else {
 
             const itemElements = results.map((item) => {

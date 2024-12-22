@@ -30,8 +30,7 @@ try {
 
     // Process all collection to get all unique data sets
     $processor = new XmlProcessorService(
-        $directoryConfig['xmlDirectory'],
-        $directoryConfig['processedXmlDirectory'],
+        $directoryConfig['xmlDirectory'],        
         $xmlReader
     );
 
