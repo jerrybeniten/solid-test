@@ -7,13 +7,10 @@ class Search {
     }
 
     init() {
-        this.searchInput.addEventListener('input', (event) => {
-            this.handleSearch(event.target.value);
-        });
-    }
+        let debounceTimeout = null;
 
-    async handleSearch(query) {
-        try {
+        this.searchInput.addEventListener('input', (event) => {
+            const query = event.target.value;
 
             if (query.length < 3) {
                 return;
@@ -21,10 +18,17 @@ class Search {
 
             clearTimeout(debounceTimeout);
 
-            var debounceTimeout = setTimeout(async () => {
-                const results = await this.searchService.search(query);
-                this.displayResults(results);
-            },500);
+            debounceTimeout = setTimeout(() => {
+                this.handleSearch(query);
+            }, 500);
+        });
+    }
+
+    async handleSearch(query) {
+        try {
+            const results = await this.searchService.search(query);
+            this.displayResults(results);
+
         } catch (error) {
             console.error(error);
             this.displayResults([]);
@@ -51,12 +55,12 @@ class Search {
             });
 
             let delay = 0;
-            itemElements.forEach((itemDiv, index) => {                
+            itemElements.forEach((itemDiv, index) => {
                 setTimeout(() => {
                     itemDiv.querySelector('.result').classList.add('visible');
                 }, delay);
                 delay += 300;
-            });           
+            });
         }
     }
 }
