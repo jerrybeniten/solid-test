@@ -20,7 +20,7 @@ class Search {
 
             debounceTimeout = setTimeout(() => {
                 this.handleSearch(query);
-            }, 500);
+            }, 300);
         });
     }
 
@@ -45,11 +45,14 @@ class Search {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'book-item';
                 itemDiv.innerHTML = `                    
-                    <div class="result">
-                        <div class="author">${item.author_name}</div>
-                        <div class="title">${item.book_title}</div>
-                    </div>            
-                `;
+                    <div class="result" role="listitem" aria-labelledby="book-title">
+                        <div class="author" aria-label="Author Name: ${item.author_name}">
+                            ${item.author_name}
+                        </div>
+                        <div class="title" id="book-title" aria-label="Book Title: ${item.book_title}">
+                            ${item.book_title}
+                        </div>
+                    </div>`;
                 this.resultsContainer.appendChild(itemDiv);
                 return itemDiv;
             });

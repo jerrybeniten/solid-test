@@ -12,8 +12,10 @@
     <div class="container">
         <div class="form-section">
             <!-- Search Input -->
-            <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search..." class="search-input">
+            <div class="search-container" role="search" aria-labelledby="search-label">
+                <label id="search-label" for="search-input" class="custom-label">Search Authors:</label>
+                <input type="text" id="search-input" title="Search authors" placeholder="Search..." class="search-input" 
+                       aria-labelledby="search-label" aria-placeholder="Search for authors by name" />
             </div>
 
             <!-- Grid Divs -->
