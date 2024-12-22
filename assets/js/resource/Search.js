@@ -61,7 +61,7 @@ class Search {
                             ${item.author_name}
                         </div>
                         <div class="title" id="book-title" aria-label="Book Title: ${item.book_title}">
-                            ${item.book_title}
+                            ${item.book_title ?? '(no books found)'}
                         </div>
                     </div>`;
                 this.resultsContainer.appendChild(itemDiv);

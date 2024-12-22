@@ -54,7 +54,6 @@ Before starting, ensure you have the following:
 
 1. Locate the SQL files in the `sql` directory. These files include:
    - `schema.sql`: Defines the database schema.
-   - `data.sql`: (Optional) Provides initial data for testing.
 
 2. Access the PostgreSQL container:
 
