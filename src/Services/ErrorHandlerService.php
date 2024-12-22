@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Interfaces\ErrorHandler;
+use App\Interfaces\ErrorHandlerInterface;
 
-class SimpleErrorHandler implements ErrorHandler
+class ErrorHandlerService implements ErrorHandlerInterface
 {
     public function handleError(string $message): void
     {

@@ -2,9 +2,9 @@
 
 namespace Cron;
 
-use App\Interfaces\ErrorHandler;
-use App\Services\HtmlResultDisplay;
-use App\Services\XmlProcessor;
+use App\Interfaces\ErrorHandlerInterface;
+use App\Services\HtmlResultDisplayService;
+use App\Services\XmlProcessorService;
 use Exception;
 
 class XmlFileHandler
@@ -18,20 +18,15 @@ class XmlFileHandler
     public function __construct(
         string $xmlDirectory,
         string $processedDirectory,
-        XmlProcessor $processor,
-        HtmlResultDisplay $resultDisplay,
-        ErrorHandler $errorHandler
+        XmlProcessorService $processor,
+        HtmlResultDisplayService $resultDisplay,
+        ErrorHandlerInterface $errorHandler
     ) {
         $this->xmlDirectory = $xmlDirectory;
         $this->processedDirectory = $processedDirectory;
         $this->processor = $processor;
         $this->resultDisplay = $resultDisplay;
         $this->errorHandler = $errorHandler;
-    }
-
-    public function validateDirectories(): bool
-    {
-        return is_dir($this->xmlDirectory) && is_dir($this->processedDirectory);
     }
 
     public function processFiles(): array
@@ -43,5 +38,10 @@ class XmlFileHandler
         } catch (Exception $e) {
             $this->errorHandler->handleError($e->getMessage());
         }
-    }    
+    } 
+
+    public function validateDirectories(): bool
+    {
+        return is_dir($this->xmlDirectory) && is_dir($this->processedDirectory);
+    }      
 }

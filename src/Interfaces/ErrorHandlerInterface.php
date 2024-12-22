@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface ErrorHandler
+interface ErrorHandlerInterface
 {
     public function handleError(string $message): void;
 }

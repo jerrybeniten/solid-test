@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface ResultDisplay
+interface ResultDisplayInterface
 {
     public function display($result): void;
 }

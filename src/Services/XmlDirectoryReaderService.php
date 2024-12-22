@@ -1,16 +1,16 @@
 <?php
 
-namespace Lib\XmlHelper;
+namespace App\Services;
 
-use App\Interfaces\XmlFileReaderInterface;
+use App\Interfaces\XmlDirectoryReaderInterface;
 use RecursiveIteratorIterator;
 use SimpleXMLElement;
 use Exception;
 
-class XmlFileReader implements XmlFileReaderInterface
+class XmlDirectoryReaderService implements XmlDirectoryReaderInterface
 {
     private RecursiveIteratorIterator $iterator;
-    private string $processedDirectory;  // New property for processed files' destination
+    private string $processedDirectory;
     private string $errorLog;
 
     /**

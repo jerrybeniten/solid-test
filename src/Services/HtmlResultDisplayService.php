@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Interfaces\ResultDisplay;
+use App\Interfaces\ResultDisplayInterface;
 
-class HtmlResultDisplay implements ResultDisplay
+class HtmlResultDisplayService implements ResultDisplayInterface
 {
     public function display($result): void
     {

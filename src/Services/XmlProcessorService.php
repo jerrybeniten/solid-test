@@ -3,23 +3,29 @@
 namespace App\Services;
 
 use App\Interfaces\XmlFileReaderInterface;
-use Lib\XmlHelper\XmlFileReader;
-use DB\Database;
 
-class XmlProcessor
+
+class XmlProcessorService
 {
     private string $directory;
     private string $processedDirectory;
-    private XmlFileReader $xmlReader;    
+    private XmlDirectoryReaderService $xmlReader;
 
     public function __construct(
         string $directory,
-        string $processedDirectory,        
-        XmlFileReaderInterface $xmlReader
+        string $processedDirectory,
+        XmlDirectoryReaderService $xmlReader
     ) {
         $this->directory = $directory;
         $this->processedDirectory = $processedDirectory;
-        $this->xmlReader = $xmlReader;        
+        $this->xmlReader = $xmlReader;
+    }
+
+    public function process(): array
+    {
+        $data = $this->xmlReader->readXmlFiles($this->directory);
+        $uniqueCollection = $this->getUniqueCollection($data);
+        return $uniqueCollection;
     }
 
     private function getUniqueCollection(array $data): array
@@ -51,14 +57,6 @@ class XmlProcessor
             }
         }
 
-        return $uniqueCollection;
-    }
-
-    public function process(): array
-    {
-        $data = $this->xmlReader->readXmlFiles($this->directory);
-        $uniqueCollection = $this->getUniqueCollection($data);
-        //$this->db->insertAuthors($uniqueCollection);
         return $uniqueCollection;
     }
 }

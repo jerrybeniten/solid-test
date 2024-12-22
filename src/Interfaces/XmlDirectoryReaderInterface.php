@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface XmlFileReaderInterface
+interface XmlDirectoryReaderInterface
 {
     public function readXmlFiles(string $directory): array;
 }

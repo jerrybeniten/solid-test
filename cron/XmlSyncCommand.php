@@ -6,30 +6,37 @@ use App\Config\Config;
 use App\Controllers\InsertController;
 use App\Models\Database;
 use App\Models\InsertService;
-use App\Services\HtmlResultDisplay;
-use App\Services\SimpleErrorHandler;
-use App\Services\XmlProcessor;
+use App\Services\ErrorHandlerService;
+use App\Services\HtmlResultDisplayService;
+use App\Services\XmlDirectoryReaderService;
+use App\Services\XmlProcessorService;
 use Cron\XmlFileHandler;
-use Lib\XmlHelper\XmlFileReader;
 
 try {
+    // Configurations
     $directoryConfig = Config::getDirectories();
     $dbConfig = Config::getDbConfig();
 
+    // Scanner tool for all xml
     $iterator = new \RecursiveIteratorIterator(
         new \RecursiveDirectoryIterator($directoryConfig['xmlDirectory'])
     );
 
-    $xmlReader = new XmlFileReader($iterator, $directoryConfig['processedXmlDirectory'], $directoryConfig['errorLog']);
+    // Returns the collection of XML objects
+    $xmlReader = new XmlDirectoryReaderService(
+        $iterator, 
+        $directoryConfig['processedXmlDirectory'], 
+        $directoryConfig['errorLog']);
 
-    $processor = new XmlProcessor(
+    // Process all collection to get all unique data sets
+    $processor = new XmlProcessorService(
         $directoryConfig['xmlDirectory'],
         $directoryConfig['processedXmlDirectory'],
         $xmlReader
     );
 
-    $resultDisplay = new HtmlResultDisplay();
-    $errorHandler = new SimpleErrorHandler();
+    $resultDisplay = new HtmlResultDisplayService();
+    $errorHandler = new ErrorHandlerService();
 
     $fileHandler = new XmlFileHandler(
         $directoryConfig['xmlDirectory'],
@@ -44,8 +51,10 @@ try {
         exit;
     }
 
+    // Processed items
     $items = $fileHandler->processFiles();
 
+    // Insert items to database
     $database = new Database($dbConfig);
     $upsertService = new InsertService($database, $items);
     $insertController = new InsertController($upsertService);
